@@ -137,8 +137,6 @@ CD@libsizes <- getLibsizes(CD)
 # Get priors for negative binomial method
 CDPriors <- getPriors.NB(CD, samplesize = 10^5, estimation = "QL", cl = cl)
 
-try(stopCluster(cl))
-
 }
 
 
