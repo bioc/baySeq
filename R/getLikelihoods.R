@@ -431,7 +431,7 @@ function(cD, prs, pET = "BIC", marginalise = FALSE, subset = NULL, priorSubset =
         
         ndePriors <- log(NBpriors[[ndelocGroup]][[1]][,1])
         weights <- priorWeights[[ndelocGroup]][[1]]
-        sep <- bimodalSep(ndePriors[ndePriors > -Inf], weights[ndePriors > -Inf], bQ = c(0.75, 1))
+        sep <- bimodalSep(ndePriors[ndePriors > -Inf], weights[ndePriors > -Inf], bQ = c(0, 0.5))
         
         groups <- c(groups, groups[ndelocGroup])
         ndenulGroup <- length(groups)
