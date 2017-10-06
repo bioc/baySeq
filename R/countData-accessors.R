@@ -5,6 +5,39 @@
 #  if(nargs() < 4) rbind2(x, ...) else rbind2(x, Recall(...))
 #})
 
+setMethod("c", "countData", function(x, ..., recursive = FALSE) {
+    cdl <- list(...)
+    if(length(cdl) == 0) return(x)
+    if(!all(sapply(cdl, inherits, "countData"))) stop("Not all items to be concatenated inherit from 'countData' class")
+    if(!(all(sapply(cdl, function(z) all(dim(z)[-1] == dim(x)[-1]))))) stop("Not all items to be concatanated have the same dimensions (other than row dimension).")
+    if(!(all(sapply(cdl, function(z) length(z@rowObservables)) == length(x@rowObservables)))) stop("Not all '@rowObservables' elements are of the same length.")
+    if(!(all(sapply(cdl, function(z) length(z@sampleObservables)) == length(x@sampleObservables)))) stop("Not all '@sampleObservables' elements are of the same length.")
+    if(!(all(sapply(cdl, function(z) length(z@cellObservables)) == length(x@cellObservables)))) stop("Not all '@cellObservables' elements are of the same length.")
+    ndat <- abind(c(list(x@data), lapply(cdl, function(x) x@data)), along = 1)
+    nrobs <- list()
+    for(ii in seq_along(x@rowObservables))
+        nrobs[[ii]] <- abind(c(list(x@rowObservables[[ii]]), lapply(cdl, function(x) x@rowObservables[[ii]])), along = 1)
+    ncobs <- list()
+    for(ii in seq_along(x@cellObservables))
+        ncobs[[ii]] <- abind(c(list(x@cellObservables[[ii]]), lapply(cdl, function(x) x@cellObservables[[ii]])), along = 1)
+    nann <- do.call("rbind.data.frame", (c(list(x@annotation), lapply(cdl, function(x) x@annotation))))
+    if(all(sapply(cdl, function(z) all.equal(z@groups, current = x@groups)))) {
+        nposts <- do.call("rbind", (c(list(x@posteriors), lapply(cdl, function(x) x@posteriors))))
+        nnposts <- do.call("rbind", (c(list(x@nullPosts), lapply(cdl, function(x) x@nullPosts))))
+        nords <- do.call("rbind.data.frame", (c(list(x@orderings), lapply(cdl, function(x) x@orderings))))
+    } else {
+        warning("Groups do not match; posterior likelihoods and associated data being discarded")
+        nposts <- matrix(NA, nrow = 0, ncol = length(x@groups))
+        nnposts <- matrix(NA, nrow = 0, ncol = ncol(x@nullPosts))
+        nords <- data.frame()
+    }
+    new("countData", data = ndat, replicates = x@replicates, groups = x@groups,
+        rowObservables = nrobs, sampleObservables = x@sampleObservables, cellObservables = ncobs,
+        annotation = nann, priorModels = x@priorModels, priorType = x@priorType,
+        densityFunction = x@densityFunction, priors = x@priors, posteriors = nposts, nullPosts = nnposts,
+        orderings = nords, estProps = numeric(0))        
+})
+
 setMethod("summary", "countData", function(object, ...) {
   desc <- cat(paste('An object of class "', class(object), '"\n', sep = ""),
               paste(nrow(object), 'rows and', ncol(object), 'columns\n'))

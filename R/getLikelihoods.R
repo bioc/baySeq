@@ -142,7 +142,7 @@ function(ps, prs, pET = "none", marginalise = FALSE, groups, priorSubset = NULL,
                                {
                                     sampw <- cbind(numintSamp[[ii]][[jj]], exweight = weights[[ii]][[jj]])
                                     nS = numintSamp[[ii]][[jj]]; exweight = weights[[ii]][[jj]]
-                                    save(sampw, nS, exweight, file = "~/sampw.RData")
+				    #                                    save(sampw, nS, exweight, file = "~/sampw.RData")
                                     sampw <- sampw[order(sampw[,2]),]                                    
                                     sapply(split(sampw[,4] * sampw[,3], sampw[,2]), sum)
                                   }))
@@ -359,10 +359,9 @@ function(cD, prs, pET = "BIC", marginalise = FALSE, subset = NULL, priorSubset =
     datdim <- dim(cD)
 
     sampleObservables <- cD@sampleObservables
-    cellObservables <- cD@cellObservables
     rowObservables <- cD@rowObservables
     
-    if(!("seglens" %in% names(cellObservables) || "seglens" %in% names(rowObservables))) rowObservables <- c(rowObservables, list(seglens = rep(1, nrow(cD))))
+    if(!("seglens" %in% names(cD@cellObservables) || "seglens" %in% names(rowObservables))) rowObservables <- c(rowObservables, list(seglens = rep(1, nrow(cD))))
     if(!("libsizes" %in% names(sampleObservables))) sampleObservables <- c(sampleObservables, list(seglens = rep(1, ncol(cD))))
     
     if(is.matrix(CDpriors)) consensus <- TRUE else consensus <- FALSE
@@ -454,33 +453,24 @@ function(cD, prs, pET = "BIC", marginalise = FALSE, subset = NULL, priorSubset =
       clusterExport(cl, c("CDpriors", "datdim", "densityFunction", "sampleObservables", ".sliceArray", "matmat", "whmat", "zid"), envir = environment())
     
     if(verbose) message("Finding posterior likelihoods...", appendLF = FALSE)
-
-    if(bootStraps > 1) {
-      priorReps <- unique(unlist(sapply(numintSamp, function(x) as.integer(unique(sapply(x, function(z) z[,1]))))))
-      priorReps <- priorReps[priorReps > 0 & !is.na(priorReps)]
-      
-      if(!all(priorReps %in% 1:nrow(cD@data)) & bootStraps > 1)
-      {
-        warning("Since the sampled values in the '@priors' slot are not available, bootstrapping is not possible.")
-        bootStraps <- 1
-      }
-    } else priorReps <- c()
     
-    postRows <- unique(c(priorReps, priorSubset, subset))   
-
-    if(verbose) message("Preparing data...", appendLF = FALSE)
-    sliceData <- list()
-    sliceData[postRows] <- lapply(postRows, function(id) {
-        if(verbose) if(sample(1:round(nrow(data) / 50), 1) == 1) message(".", appendLF = FALSE)
-        list(id = id,
-             data = asub(data, id, dims = 1, drop = FALSE),
-             cellObs = lapply(cellObservables, function(cob) asub(cob, id, dims = 1, drop = FALSE)),
-             rowObs = lapply(rowObservables, function(rob) asub(rob, id, dims = 1, drop = FALSE)))
-    })
-    if(verbose) message("done.")
-                    
+    if(bootStraps > 1) {
+        priorReps <- unique(unlist(sapply(numintSamp, function(x) as.integer(unique(sapply(x, function(z) z[,1]))))))
+        priorReps <- priorReps[priorReps > 0 & !is.na(priorReps)]
+        
+        if(!all(priorReps %in% 1:nrow(cD@data)) & bootStraps > 1)
+            {
+                warning("Since the sampled values in the '@priors' slot are not available, bootstrapping is not possible.")
+                bootStraps <- 1
+            }
+    } else priorReps <- c()
 
 
+    message("Length of priorReps:", length(priorReps))
+    message("Length of priorSubset:", length(priorSubset))
+    message("Length of subset:", length(subset))
+    postRows <- unique(c(priorReps, priorSubset, subset))                       
+    message("Length of postRows:", length(postRows))
     
     .fastUniques <- function(x){
       if (nrow(x) > 1) {
@@ -501,60 +491,63 @@ function(cD, prs, pET = "BIC", marginalise = FALSE, subset = NULL, priorSubset =
         if(cc > 1)
           {
             if(!bsNullOnly | !nullData) {
-              weights <- lapply(1:length(numintSamp), function(ii) lapply(1:length(numintSamp[[ii]]), function(jj) exp(posteriors[numintSamp[[ii]][[jj]][,1],ii])))
+                weights <- lapply(1:length(numintSamp), function(ii) lapply(1:length(numintSamp[[ii]]), function(jj) exp(posteriors[numintSamp[[ii]][[jj]][,1],ii])))
             } else {
-              weights <- lapply(1:length(numintSamp), function(ii)
-                                lapply(1:length(numintSamp[[ii]]), function(jj)
-                                       {
-                                         if(ii == ndenulGroup) weights = exp(posteriors[numintSamp[[ii]][[jj]][,1],ii]) else weights = 1 - exp(posteriors[numintSamp[[ii]][[jj]][,1],ndenulGroup])
-                                            weights
-                                          }))
+                weights <- lapply(1:length(numintSamp), function(ii)
+                    lapply(1:length(numintSamp[[ii]]), function(jj)
+                        {
+                            if(ii == ndenulGroup) weights = exp(posteriors[numintSamp[[ii]][[jj]][,1],ii]) else weights = 1 - exp(posteriors[numintSamp[[ii]][[jj]][,1],ndenulGroup])
+                            weights
+                        }))
             }
-          }
-
+        }
+        
         ps <- NULL
         if (is.null(cl)) {
-          if(cc > 1)
-            priorWeights <- .constructWeights(numintSamp = numintSamp, weights = weights, CDpriors = CDpriors)
+            if(cc > 1)
+                priorWeights <- .constructWeights(numintSamp = numintSamp, weights = weights, CDpriors = CDpriors)
+        }
 
-          for(ss in 1:length(splitRows)) {
-              tps <- lapply(sliceData[splitRows[[ss]]],
-                            .likeDataObs, densityFunction = densityFunction, groups = groups, consensus = consensus, differentWeights = differentWeights, modelLikes = modelLikes)
-              if(!is.null(tempFile)) {
-                  save(tps, file = paste(tempFile, "_", ss, ".RData", sep = ""))
-                  if(verbose) message(".", appendLF = FALSE)
-              }
-              ps <- c(ps, tps)
-          }
-      } else {
-          clusterExport(cl, "numintSamp", envir = environment())
-          
-          clusterCall(cl, .constructWeights, numintSamp = numintSamp, weights = weights, CDpriors = CDpriors, withinCluster = TRUE, consensus = consensus)
-          getLikesEnv <- new.env(parent = .GlobalEnv)
-          environment(.likeDataObs) <- getLikesEnv
-          for(ss in 1:length(splitRows)) {
-              tps <- parLapplyLB(cl[1:min(length(cl), length(postRows[whunq]))], sliceData[splitRows[[ss]]],
-                                 .likeDataObs, densityFunction = densityFunction, groups = groups, consensus = consensus, differentWeights = differentWeights, modelLikes = modelLikes)#, restrictResults = restrictResults)
-              if(!is.null(tempFile)) {
-                  save(tps, file = paste(tempFile, "_", ss, ".RData", sep = ""))
-                  if(verbose) message(".", appendLF = FALSE)
-              }
-              ps <- c(ps, tps)
-          }
-      }
-
-        if(!is.null(tempFile)) return(paste(tempFile, "_", 1:length(splitRows), ".RData", sep = ""))
+        for(ss in 1:length(splitRows)) {
+            if(verbose) message("Analysing part ", ss, " of ", length(splitRows))
+            if(verbose) message("Preparing data...", appendLF = FALSE)
+            
+            sliceData <- list()
+            sliceData <- lapply(splitRows[[ss]], function(id) {
+                if(verbose) if(sample(1:round(nrow(data) / 50), 1) == 1) message(".", appendLF = FALSE)
+                list(id = id,
+                     data = asub(data, id, dims = 1, drop = FALSE),
+                     cellObs = lapply(cD@cellObservables, function(cob) asub(cob, id, dims = 1, drop = FALSE)),
+                     rowObs = lapply(rowObservables, function(rob) asub(rob, id, dims = 1, drop = FALSE)))
+            })
+            if(verbose) message("done.")
+            
+            if(verbose) message("Estimating likelihoods...",appendLF = FALSE)
+            
+            if (is.null(cl)) {                
+                tps <- lapply(sliceData,
+                              .likeDataObs, densityFunction = densityFunction, groups = groups, consensus = consensus, differentWeights = differentWeights, modelLikes = modelLikes)
+            } else {
+                clusterExport(cl, "numintSamp", envir = environment())
+                
+                clusterCall(cl, .constructWeights, numintSamp = numintSamp, weights = weights, CDpriors = CDpriors, withinCluster = TRUE, consensus = consensus)
+                getLikesEnv <- new.env(parent = .GlobalEnv)
+                environment(.likeDataObs) <- getLikesEnv
+                
+                tps <- parLapplyLB(cl[1:min(length(cl), length(postRows[whunq]))], sliceData,
+                                   .likeDataObs, densityFunction = densityFunction, groups = groups, consensus = consensus, differentWeights = differentWeights, modelLikes = modelLikes)#, restrictResults = restrictResults)
+            }
+            if(!is.null(tempFile)) save(tps, file = paste(tempFile, "_", ss, ".RData", sep = ""))
+            
+            if(verbose) message("...done!")
+            ps <- c(ps, tps)
+        }
         
-        if(!modelLikes) return(ps)
-
         rps <- matrix(NA, ncol = length(groups), nrow = nrow(cD@data))
 
         rps[postRows[whunq],] <- do.call("rbind", ps)
 
-        if(returnPD) {
-            message("done.")
-            return(rps)
-        }
+        if(returnPD) return(rps)
 
         restprs <- lapply(1:length(modelPriorSets), function(pp) {
           pSub <- intersect(priorSubset, modelPriorSets[[pp]])
@@ -575,7 +568,8 @@ function(cD, prs, pET = "BIC", marginalise = FALSE, subset = NULL, priorSubset =
 
 
         ppsPosts <- lapply(1:length(modelPriorSets), function(pp) {
-          pSub <- intersect(union(priorReps, subset), modelPriorSets[[pp]])
+                                        #pSub <- intersect(union(priorReps, subset), modelPriorSets[[pp]])
+            pSub <- postRows
           if(length(pSub) == nrow(cD) && all(1:nrow(cD) == pSub)) pps <- rps else pps <- rps[pSub,,drop = FALSE]
           pps <- getPosteriors(ps = pps, prs = restprs[[pp]], pET = "none", marginalise = marginalise, groups = groups, priorSubset = NULL, cl = cl)
           list(pps = pps, pSub = pSub)

@@ -7,8 +7,8 @@ selectTop <- function(cD, group, ordering, orderings = TRUE, decreasing = TRUE, 
   if(missing(posteriors)) posteriors <- NULL
   
   if(!missing(group)) {
-    st <- .selectTags(cD, group = group, ordering = ordering, decreasing = decreasing, number = number, likelihood = likelihood, FDR = FDR, FWER = FWER, posteriors = posteriors)
-    if(!is.null(st)) return(cD[st,]) else return(NULL)
+      st <- .selectTags(cD, group = group, ordering = ordering, decreasing = decreasing, number = number, likelihood = likelihood, FDR = FDR, FWER = FWER, posteriors = posteriors)
+      if(!is.null(st)) return(cD[st,]) else return(NULL)
   }
 
   if(length(cD@nullPosts) > 0) {
@@ -46,37 +46,37 @@ selectTop <- function(cD, group, ordering, orderings = TRUE, decreasing = TRUE, 
 #}
 
 .selectTags <- function(cD, group, ordering, decreasing = TRUE, number = 10, likelihood, FDR, FWER, posteriors) {
-  if(!inherits(cD, what = "countData"))
-    stop("variable 'cD' must be of or descend from class 'countData'")
-  if(nrow(cD@posteriors) == 0)
-    stop("The '@posteriors' slot of cD is empty!")
+    if(!inherits(cD, what = "countData"))
+        stop("variable 'cD' must be of or descend from class 'countData'")
+    if(nrow(cD@posteriors) == 0)
+        stop("The '@posteriors' slot of cD is empty!")
   
-  if(is.character(group))
-    group <- pmatch(group, names(cD@groups))
-  if(!is.null(group) && is.na(group)) stop("Can't match this group name.")
+    if(is.character(group))
+        group <- pmatch(group, names(cD@groups))
+    if(!is.null(group) && is.na(group)) stop("Can't match this group name.")
   
-  if(!is.null(ordering)) {
-    ordCD <- which(cD@orderings[,group] == ordering)
-    cD <- cD[ordCD,]
-    if(!is.null(posteriors)) posteriors <- posteriors[ordCD]
-  }
-
-  if(is.null(posteriors)) {
-      if(is.null(group)) {
-          if(length(cD@nullPosts) == 0)
-              stop("The '@nullPosts' slot of cD is empty - you can't use 'group = NULL'.")
-          likes <- cD@nullPosts
-          neglikes <- cD@posteriors
-      } else {
-          likes <- cD@posteriors[,group,drop = FALSE]    
-          if(length(cD@nullPosts) > 0) neglikes <- cbind(cD@posteriors[,-group,drop=FALSE], cD@nullPosts) else neglikes <- cD@posteriors[,-group, drop = FALSE]
-      }
-  } else {
-      likes <- matrix(posteriors, ncol = 1)
-      neglikes <- matrix(log(1 - exp(likes)), ncol = 1)
-  }
+    if(!is.null(ordering)) {
+        ordCD <- which(cD@orderings[,group] == ordering)
+        cD <- cD[ordCD,]
+        if(!is.null(posteriors)) posteriors <- posteriors[ordCD]
+    }
+    
+    if(is.null(posteriors)) {
+        if(is.null(group)) {
+            if(length(cD@nullPosts) == 0)
+                stop("The '@nullPosts' slot of cD is empty - you can't use 'group = NULL'.")
+            likes <- cD@nullPosts
+            neglikes <- cD@posteriors
+        } else {
+            likes <- cD@posteriors[,group,drop = FALSE]    
+            if(length(cD@nullPosts) > 0) neglikes <- cbind(cD@posteriors[,-group,drop=FALSE], cD@nullPosts) else neglikes <- cD@posteriors[,-group, drop = FALSE]
+        }
+    } else {
+        likes <- matrix(posteriors, ncol = 1)
+        neglikes <- matrix(log(1 - exp(likes)), ncol = 1)
+    }
   
-  ordgroups <- order(.logRowSum(neglikes), decreasing = !decreasing)
+    ordgroups <- order(.logRowSum(neglikes), decreasing = !decreasing)
 
   cutNumber <- c()
   if(!is.null(likelihood))

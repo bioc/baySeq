@@ -21,7 +21,7 @@ FALSE, consensus = FALSE, cl, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{cD}{A \code{\link{countData}} or \code{\link{pairedData}} object.}
+  \item{cD}{A \code{\link{countData}} object.}
   \item{samplesize}{How large a sample should be taken in estimating the
     priors?}
   \item{samplingSubset}{If given, the priors will be sampled only from
@@ -48,10 +48,7 @@ FALSE, consensus = FALSE, cl, ...)
 \details{
   These functions empirically estimate prior parameters for the
   distributions used in estimating posterior likelihoods of each count
-  belonging to a particular group. For unpaired count data, the
-  distributions on the data are assumed to be negative binomial. For
-  paired count data, the distributions on the data are assumed to be
-  beta-binomial.
+  belonging to a particular group. 
 
   For priors estimated for the negative binomial methods, three options
   are available. Differences in the options focus on the way in which

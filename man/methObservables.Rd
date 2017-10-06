@@ -15,14 +15,30 @@ data.
   `@sampleObservables' slot.
 }
 \usage{
-methObservables(mD)
+methObservables(mD, tail = 0.01)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{mD}{
     A \code{\link{countData}} object, or descendant, which contains a
     numeric vector 'nonconversion' in the `@sampleObservables' slot.
+  }
+  \item{tail}{A cutoff on the quantile (upper and lower) of the
+    distribution on the non-conversion. Smaller values will give a
+    marginal increase in accuracy at high computational cost. Large
+    values will decrease accuracy somewhat but reduce the time needed
+    for analysis. See Details.
+    }
+
 }
+
+\details{For loci with large numbers of observed cytosines, the full dataset
+  to be pre-computed will be very large. However, only the
+  pre-computations near the average expression level will contribute
+  significantly to the estimated priors and posteriors. The `tail'
+  parameter sets the quantile at which the distribution is considered to
+  no longer contribute significantly to the results. Values below 0.1
+  are probably acceptable under nearly all circumstances.
 }
 
 \value{

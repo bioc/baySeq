@@ -69,7 +69,7 @@
       splitOptimFixed <- do.call("c", lapply(1:length(eqovRep), function(ii) if(eqovRep[ii]) ii else rep(ii, length(levels(replicates)))))
 
       if(any(eqovRep))
-          fixed <- split(optim(par = parOptimFixed, fn = optimFixed, repdat = repdat, datdim = datdim, replicates = replicates, control = list(fnscale = -1, maxit = 5000, reltol = 1e-50, trace = TRUE), repobs = repobs)$par, splitOptimFixed)[eqovRep]
+          fixed <- split(optim(par = parOptimFixed, fn = optimFixed, repdat = repdat, datdim = datdim, replicates = replicates, control = list(fnscale = -1, maxit = 5000, reltol = 1e-50, trace = FALSE), repobs = repobs)$par, splitOptimFixed)[eqovRep]
 
       groupValues <- function(gg, group) {
         gdat <- .sliceArray(list(NULL, which(group == gg)), dat, drop = FALSE)

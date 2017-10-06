@@ -4,11 +4,8 @@
 \alias{baySeq-class}
 \alias{countData}
 \alias{countData-class}
-\alias{pairedData}
-\alias{pairedData-class}
-\alias{show,pairedData-method}
-\alias{[,pairedData-method}
 \alias{dim,countData-method}
+\alias{c,countData-method}
 \alias{[,countData-method}
 \alias{[,countData,ANY-method}
 \alias{show,countData-method}
@@ -31,8 +28,6 @@
 \alias{densityFunction<-}
 \alias{libsizes,countData-method}
 \alias{libsizes<-,countData-method}
-\alias{libsizes,pairedData-method}
-\alias{libsizes<-,pairedData-method}
 \alias{libsizes}
 \alias{libsizes<-}
 \alias{rbind}
@@ -84,7 +79,7 @@ all segments have the same length.
 }
 
 \section{Methods}{
-  The standard methods 'new', 'dim', '[', 'show' and 'rbind' have been
+  The standard methods 'new', 'dim', '[', 'show', 'rbind' and 'c' have been
   defined for these classes. The methods 'groups', 'groups<-',
   'replicates', 'replicates<-', 'libsizes' and 'libsizes<-' have also
   been defined in order to access and modify these slots, and their use is recommended.

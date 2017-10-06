@@ -212,11 +212,11 @@ bbNCDist <- new("densityFunction",
   mD
 }
 
-methObservables <- function(mD) {
+methObservables <- function(mD, tail = 0.01) {
   cdat <- matrix(mD@data[,,1, drop = FALSE], ncol = ncol(mD))
   tdat <- matrix(mD@data[,,2, drop = FALSE], ncol = ncol(mD))
-  upplim <- matrix(qbinom(0.01, as.vector(tdat) + as.vector(cdat), rep(mD@sampleObservables$nonconversion, each = nrow(mD)), lower.tail = FALSE), nrow = nrow(mD), ncol = ncol(mD))
-  lowlim <- matrix(qbinom(0.01, as.vector(tdat), rep(mD@sampleObservables$nonconversion, each = nrow(mD)), lower.tail = TRUE), nrow = nrow(mD), ncol = ncol(mD))
+  upplim <- matrix(qbinom(tail, as.vector(tdat) + as.vector(cdat), rep(mD@sampleObservables$nonconversion, each = nrow(mD)), lower.tail = FALSE), nrow = nrow(mD), ncol = ncol(mD))
+  lowlim <- matrix(qbinom(tail, as.vector(tdat), rep(mD@sampleObservables$nonconversion, each = nrow(mD)), lower.tail = TRUE), nrow = nrow(mD), ncol = ncol(mD))
   upplim <- upplim - pmax(upplim - cdat, 0);
   lowlim <- lowlim - pmax(lowlim - cdat, 0);
   
