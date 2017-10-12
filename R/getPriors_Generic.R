@@ -1,3 +1,4 @@
+# modification on git from copied files
 
 `getPriors` <- function (cD, samplesize = 1e5, samplingSubset = NULL, consensus = FALSE, cl, verbose = TRUE)
 {

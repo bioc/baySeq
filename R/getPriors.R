@@ -1,3 +1,4 @@
+# modification on git from copied files
 `getPriors.NB` <-
 function (cD, samplesize = 1e5, samplingSubset = NULL, equalDispersions = TRUE, estimation = "QL", verbose = TRUE, zeroML = FALSE, consensus = FALSE, cl, ...)
 {

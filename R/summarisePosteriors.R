@@ -1,3 +1,4 @@
+# modification on git from copied files
 .ciEstimator <- function(posteriors, n = 10000, ci = 0.05) {
   zz <- matrix(rbinom(length(posteriors) * n, 1, posteriors), ncol = n)
   quantile(colSums(zz), probs = c(ci / 2, 1 - ci / 2))

@@ -1,3 +1,4 @@
+# modification on git from copied files
 `getLikelihoods.NB` <-
 function(cD, prs, pET = "BIC", marginalise = FALSE, subset = NULL, priorSubset = NULL, bootStraps = 1, conv = 1e-4, nullData = FALSE, returnAll = FALSE, returnPD = FALSE, verbose = TRUE, discardSampling = FALSE, cl = NULL, ...)
   {

@@ -1,3 +1,4 @@
+# modification on git from copied files
 densityFunctions <- function() {
   denfuncs <- Filter( function(x) 'densityFunction' %in% class( get(x) ), ls("package:baySeq") )
   cbind(densityFunction = denfuncs, description = sapply(denfuncs, function(df) eval(parse(text = paste(df, "@description", sep = "")))))

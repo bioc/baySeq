@@ -1,3 +1,4 @@
+# modification on git from copied files
 `plotPriors` <-
 function(cD, group, par = 1)
   {        

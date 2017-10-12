@@ -1,3 +1,4 @@
+# modification on git from copied files
 .bimodalSep <- function(z, weights = NULL, bQ = c(0,1))
   {
     if(is.null(weights))

@@ -1,3 +1,4 @@
+# modification on git from copied files
 marginaliseEqual <- function(cD, r1, r2) {
     sameGroups <- sapply(strsplit(names(cD@groups), "\\},\\{"), function(x) {
         z <- gsub("[\\{\\}]", "", x)

@@ -1,3 +1,4 @@
+# modification on git from copied files
 
 .betaBinomialFunction <- function(dat, observables, parameters) {  
 dbetabinom <- function(x, n, prop, disp, log = TRUE) {  

@@ -1,3 +1,4 @@
+# modification on git from copied files
 
 .bimodalKernel <- function(z, weights = NULL)
   {

@@ -1,3 +1,4 @@
+# modification on git from copied files
 setMethod("initialize", "densityFunction", function(.Object, ...) {
   dotlist <- list(...)
   if("initiatingValues" %in% names(dotlist))

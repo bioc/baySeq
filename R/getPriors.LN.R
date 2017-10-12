@@ -1,3 +1,4 @@
+# modification on git from copied files
 #
 #.optimoverPriorsLN <- function(x, estimation, replicates, groups, libsizes, equalDispersions, lensameFlag, zeroML, consensus, disp)
 #    {

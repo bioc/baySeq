@@ -1,3 +1,4 @@
+# modification on git from copied files
 plotMA.CD <- function(cD, samplesA, samplesB, normaliseData = TRUE, scale = NULL, xlab = "A", ylab = "M", ...)
 {
   if(length(dim(cD)) > 2) stop("This function is currently only applicable to 2-dimensional countData objects.")

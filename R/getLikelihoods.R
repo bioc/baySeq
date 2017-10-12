@@ -1,3 +1,4 @@
+# modification on git from copied files
 .posteriorWeights <- function(cD, group, CDpriors, consensus) {
   numintSamp <- cD@priors$sampled
   weights <- cD@priors$weights

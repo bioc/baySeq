@@ -1,3 +1,4 @@
+# modification on git from copied files
 plotPosteriors <- function(cD, group, samplesA, samplesB, ...)
 {
   if(length(dim(cD)) > 2) stop("This function is currently only applicable to 2-dimensional countData objects.")

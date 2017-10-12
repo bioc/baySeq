@@ -1,3 +1,4 @@
+# modification on git from copied files
 getTPs <- function(cD, group, decreasing = TRUE, TPs)
   {
     if(is.character(group))

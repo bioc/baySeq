@@ -1,3 +1,4 @@
+# modification on git from copied files
 selectTop <- function(cD, group, ordering, orderings = TRUE, decreasing = TRUE, number = 10, likelihood, FDR, FWER, posteriors) {
   if(missing(likelihood)) likelihood <- NULL
   if(missing(FDR)) FDR <- NULL
