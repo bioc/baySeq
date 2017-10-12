@@ -1,3 +1,4 @@
+% modification on git from copied files
 \name{getTPs}
 \alias{getTPs}
 \title{Gets the number of true positives in the top n counts selected by

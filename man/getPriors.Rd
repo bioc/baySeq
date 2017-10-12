@@ -1,3 +1,4 @@
+% modification on git from copied files
 \name{getPriors}
 \alias{getPriors}
 \alias{getPriors.NB}

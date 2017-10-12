@@ -1,3 +1,4 @@
+% modification on git from copied files
 \name{selectTop}
 \alias{selectTop}
 %- Also NEED an '\alias' for EACH other topic documented here.

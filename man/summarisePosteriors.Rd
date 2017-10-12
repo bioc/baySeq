@@ -1,3 +1,4 @@
+% modification on git from copied files
 \name{summarisePosteriors}
 \alias{summarisePosteriors}
 

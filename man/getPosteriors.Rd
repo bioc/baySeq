@@ -1,3 +1,4 @@
+% modification on git from copied files
 \name{getPosteriors}
 \alias{getPosteriors}
 \title{An internal function in the baySeq package for calculating

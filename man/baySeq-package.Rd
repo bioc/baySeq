@@ -1,3 +1,4 @@
+% modification on git from copied files
 \name{baySeq-package}
 \alias{baySeq-package}
 \alias{baySeq}

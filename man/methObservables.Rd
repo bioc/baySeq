@@ -1,4 +1,5 @@
 % modification on git from copied files
+% modification on git from copied files
 \name{methObservables}
 \alias{methObservables}
 %- Also NEED an '\alias' for EACH other topic documented here.

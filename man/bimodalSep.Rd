@@ -1,3 +1,4 @@
+% modification on git from copied files
 \name{bimodalSeparator}
 \alias{bimodalSeparator}
 \title{A function that, given a numeric vector, finds the value which

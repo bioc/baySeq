@@ -1,3 +1,4 @@
+% modification on git from copied files
 \name{plotNullPrior}
 \alias{plotNullPrior}
 %- Also NEED an '\alias' for EACH other topic documented here.

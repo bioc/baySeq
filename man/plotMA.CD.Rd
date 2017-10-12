@@ -1,3 +1,4 @@
+% modification on git from copied files
 \name{plotMA.CD}
 \alias{plotMA.CD}
 

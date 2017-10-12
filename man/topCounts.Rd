@@ -1,3 +1,4 @@
+% modification on git from copied files
 \name{topCounts}
 \alias{topCounts}
 \title{Get the top counts corresponding to some group from a

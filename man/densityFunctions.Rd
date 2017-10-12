@@ -1,3 +1,4 @@
+% modification on git from copied files
 \name{densityFunctions}
 \alias{densityFunctions}
 \alias{ZINBDensity}

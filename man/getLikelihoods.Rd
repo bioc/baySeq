@@ -1,3 +1,4 @@
+% modification on git from copied files
 \name{getLikelihoods}
 \alias{getLikelihoods}
 \alias{getLikelihoods.NB}

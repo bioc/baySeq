@@ -1,3 +1,4 @@
+% modification on git from copied files
 \name{plotPriors}
 \alias{plotPriors}
 \title{Plots the density of the log values estimated for the mean rate

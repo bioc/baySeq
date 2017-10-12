@@ -1,3 +1,4 @@
+% modification on git from copied files
 \name{allModels}
 \alias{allModels}
 %- Also NEED an '\alias' for EACH other topic documented here.

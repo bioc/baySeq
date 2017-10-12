@@ -1,3 +1,4 @@
+% modification on git from copied files
 \name{baySeq-classes}
 \docType{class}
 \alias{baySeq-classes}

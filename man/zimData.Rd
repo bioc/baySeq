@@ -1,3 +1,4 @@
+% modification on git from copied files
 \name{zimData}
 \docType{data}
 \alias{zimData}
