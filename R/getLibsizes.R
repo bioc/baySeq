@@ -1,3 +1,6 @@
+
+#test change for git
+
 'getLibsizes' <- function(cD, data, replicates, subset = NULL, estimationType = c("quantile", "total", "edgeR"), quantile = 0.75, ...)
   {
     if(!missing(cD)) {
