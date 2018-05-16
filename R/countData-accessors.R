@@ -70,7 +70,34 @@ setMethod("summary", "countData", function(object, ...) {
   } else summarySum <- NULL
   invisible(list(desc = desc, expFDR = summarySum))
 })
-  
+
+setGeneric("flatten", function(cD, normalise = FALSE) standardGeneric("flatten"))
+setMethod("flatten", signature = "countData", function(cD, normalise = FALSE) {        
+        
+    if(normalise) {
+        observables <- .catObservables(cD)
+        
+        meanLibs <- array(apply(
+            matrix(apply(observables$libsizes, setdiff(1:length(dim(cD@data)), 2), function(x) exp(mean(log(x)))), nrow = nrow(observables$libsizes))
+          , 2, function(x) matrix(x, nrow = length(x), ncol = dim(cD@data)[2])), dim(observables$libsizes))
+        selData <- round(cD@data / observables$libsizes * meanLibs / observables$seglens * exp(mean(log(observables$seglens))))
+    } else selData <- cD@data
+    showData <- .showData(selData)
+    colnames(showData) <- colnames(cD@data)
+        
+    if(nrow(cD@orderings) == 0 || all(cD@orderings == "")) noorder <- TRUE else noorder <- FALSE        
+    if(nrow(cD@annotation) == 0) annotation <- data.frame() else annotation <- cD@annotation
+    
+    if("coordinates" %in% slotNames(cD))
+        annotation <- cbind(annotation, GenomicRanges::as.data.frame(cD@coordinates)) else annotation <- annotation        
+    
+    likes <- exp(cD@posteriors)
+    topTags <- data.frame(annotation, showData, likes)
+    if(!noorder) topTags <- cbind(topTags, cD@orderings)
+                          
+    return(topTags)
+    })
+
 setGeneric("groups<-", function(x, value) standardGeneric("groups<-"))
 setMethod("groups<-", signature = "countData", function(x, value) {
     if(any(sapply(value, length) != ncol(x))) stop(paste(sum(sapply(value, length) != ncol(x)), "vector(s) in the groups structure are the wrong length."))

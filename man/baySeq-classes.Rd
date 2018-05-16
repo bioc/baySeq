@@ -15,6 +15,8 @@
 \alias{replicates<-,countData-method}
 \alias{replicates}
 \alias{replicates<-}
+\alias{flatten,countData-method}
+\alias{flatten}
 \alias{groups,countData-method}
 \alias{groups<-,countData-method}
 \alias{groups}
@@ -83,7 +85,10 @@ all segments have the same length.
   The standard methods 'new', 'dim', '[', 'show', 'rbind' and 'c' have been
   defined for these classes. The methods 'groups', 'groups<-',
   'replicates', 'replicates<-', 'libsizes' and 'libsizes<-' have also
-  been defined in order to access and modify these slots, and their use is recommended.
+  been defined in order to access and modify these slots, and their use
+  is recommended. The method 'flatten' can be used to produce a
+  data.frame object containing much of the basic data in a member of
+  this class.
 }
 
 \author{Thomas J. Hardcastle}

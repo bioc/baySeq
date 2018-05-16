@@ -83,7 +83,7 @@ selectTop <- function(cD, group, ordering, orderings = TRUE, decreasing = TRUE, 
   if(!is.null(likelihood))
       cutNumber <- c(cutNumber, sum(likes > log(likelihood), na.rm = TRUE))
   if (!is.null(FDR))
-      cutNumber <- c(cutNumber, sum(cumsum(1 - exp(likes[ordgroups,1]))/ 1:sum(!is.na(likes[,1])) < FDR, na.rm = TRUE))
+      cutNumber <- c(cutNumber, sum(cumsum(1 - exp(likes[ordgroups[1:sum(!is.na(likes[,1]))],1])) / 1:sum(!is.na(likes[,1])) < FDR, na.rm = TRUE))
   if (!is.null(FWER))
       cutNumber <- c(cutNumber, sum(1 - cumprod(exp(likes[ordgroups,1])) < FWER, na.rm = TRUE))
   
@@ -103,59 +103,40 @@ selectTop <- function(cD, group, ordering, orderings = TRUE, decreasing = TRUE, 
 `topCounts` <-
 function(cD, group, ordering, decreasing = TRUE, number = 10, likelihood, FDR, FWER, normaliseData = FALSE, posteriors)
   {
-    if(missing(likelihood)) likelihood <- NULL
-    if(missing(FDR)) FDR <- NULL
-    if(missing(FWER)) FWER <- NULL
-    if(missing(ordering)) ordering <- NULL
-
-    if(is.character(group))
-      group <- pmatch(group, names(cD@groups))
-    if(!is.null(group) && is.na(group)) stop("Can't match this group name.")
-
-    if(missing(posteriors)) posteriors <- NULL
-    
-    selTags <- .selectTags(cD, group, ordering, decreasing = decreasing, number = number, likelihood, FDR, FWER, posteriors)
-
-    if(is.null(posteriors)) {
-        if(!is.null(group)) likes <- cD@posteriors[selTags,group] else likes <- cD@nullPosts[selTags,1]
-    } else {
-        likes <- posteriors[selTags]
-    }
-
-    
-
-    if(all(is.null(selTags))) return(NULL)
-    
-    selData <- .sliceArray(list(selTags), cD@data)
-    if(normaliseData) {
-        observables <- .catObservables(cD[selTags,])
-        
-        meanLibs <- array(apply(
-            matrix(apply(observables$libsizes, setdiff(1:length(dim(cD@data)), 2), function(x) exp(mean(log(x)))), nrow = nrow(observables$libsizes))
-          , 2, function(x) matrix(x, nrow = length(x), ncol = dim(cD@data)[2])), dim(observables$libsizes))
-        selData <- round(selData / observables$libsizes * meanLibs / observables$seglens * exp(mean(log(observables$seglens))))
+      if(missing(likelihood)) likelihood <- NULL
+      if(missing(FDR)) FDR <- NULL
+      if(missing(FWER)) FWER <- NULL
+      if(missing(ordering)) ordering <- NULL
+      
+      if(is.character(group))
+          group <- pmatch(group, names(cD@groups))
+      if(!is.null(group) && is.na(group)) stop("Can't match this group name.")
+      
+      if(missing(posteriors)) posteriors <- NULL
+      
+      selTags <- .selectTags(cD, group, ordering, decreasing = decreasing, number = number, likelihood, FDR, FWER, posteriors)
+      if(all(is.null(selTags))) return(NULL)
+      
+      if(is.null(posteriors)) {
+          if(!is.null(group))
+              likes <- cD@posteriors[selTags,group]
+          else likes <- cD@nullPosts[selTags,1]
+      } else {
+          likes <- posteriors[selTags,]
       }
-    showData <- .showData(selData)
-    colnames(showData) <- colnames(cD@data)
-    
-    if(length(cD@orderings) > 0 && !is.null(group)) ordering <- cD@orderings[selTags, group, drop = TRUE] else ordering <- rep("", length(selTags))
-    if(all(ordering == "")) noorder <- TRUE else noorder <- FALSE
-    
-    
-    if(nrow(cD@annotation) == 0) annotation <- data.frame(rowID = selTags) else annotation <- cD@annotation[selTags,]    
-    
-    if(inherits(cD, what = "lociData") | inherits(cD, what = "methData"))
-      annotation <- cbind(annotation, GenomicRanges::as.data.frame(cD@coordinates[selTags])) else annotation <- annotation    
 
-    
-    
-    topTags <- data.frame(annotation, showData, Likelihood = exp(likes),
-                          ordering = ordering,
-                          FDR = cumsum(1 - exp(likes)) / 1:length(selTags),
-                          FWER = 1 - cumprod(exp(likes)))
-    names(topTags)[names(topTags) == "FDR"] <- paste("FDR", names(cD@groups)[group[1]], sep = ".")
-    names(topTags)[names(topTags) == "FWER"] <- paste("FWER", names(cD@groups)[group[1]], sep = ".")
-    if(noorder) topTags <- topTags[,-which(colnames(topTags) == "ordering")]
-    rownames(topTags) <- rownames(cD@data)[selTags]
-    topTags
+      topCD <- cD[selTags,]
+      topCD@posteriors <- matrix(likes, nrow = nrow(topCD))
+      if(length(cD@orderings) > 0 && !is.null(group)) topCD@orderings <- topCD@orderings[, group, drop = FALSE] else topCD@orderings <- data.frame()
+      if(nrow(topCD@annotation) == 0) topCD@annotation <- data.frame(rowID = selTags)
+      
+      topTags <- flatten(topCD)
+      topTags <- cbind(topTags,
+                       FDR = cumsum(1 - exp(likes)) / 1:length(selTags),
+                       FWER = 1 - cumprod(exp(likes)))
+      names(topTags)[names(topTags) == "FDR"] <- paste("FDR", names(cD@groups)[group[1]], sep = ".")
+      names(topTags)[names(topTags) == "FWER"] <- paste("FWER", names(cD@groups)[group[1]], sep = ".")      
+      topTags
   }
+
+
