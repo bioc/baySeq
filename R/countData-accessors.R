@@ -84,6 +84,7 @@ setMethod("flatten", signature = "countData", function(cD, normalise = FALSE) {
     } else selData <- cD@data
     showData <- .showData(selData)
     colnames(showData) <- colnames(cD@data)
+    rownames(showData) <- rownames(cD@data)
         
     if(nrow(cD@orderings) == 0 || all(cD@orderings == "")) noorder <- TRUE else noorder <- FALSE        
     if(nrow(cD@annotation) == 0) annotation <- data.frame() else annotation <- cD@annotation
