@@ -43,7 +43,7 @@ library(baySeq)
 
 Note that because the experiments that \verb'baySeq' is designed to analyse are usually massive, we should use (if possible) parallel processing as implemented by the \verb'snow' package. We use the \verb'parallel' package (if it exists), and define a \textsl{cluster}. If \verb'parallel' is not present, we can proceed anyway with a \verb'NULL' cluster. Results may be slightly different depending on whether or not a cluster is used owing to the non-deterministic elements of the method.
 <<results = hide>>=
-if(require("parallel")) cl <- makeCluster(8) else cl <- NULL
+if(require("parallel")) cl <- makeCluster(4) else cl <- NULL
 @
 
 We load a simulated data set consisting of count data on one thousand counts.

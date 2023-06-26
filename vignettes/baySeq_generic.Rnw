@@ -36,7 +36,7 @@ options(width = 90)
 If parallelisation is available, it is useful to use it.
 
 <<>>=
-if(require("parallel")) cl <- makeCluster(8) else cl <- NULL
+if(require("parallel")) cl <- makeCluster(4) else cl <- NULL
 @ 
 
 <<>>=
@@ -182,18 +182,19 @@ It is now possible to use different model priors for different subsets of the co
 
 Let us suppose that we have reason to believe that the first hundred genes in the `CD' object are likely to behave differently to the remaining genes. Then
 
-<<>>=
+<<eval=FALSE>>=
+# FAILS Bioc 3.17
 CDv <- getLikelihoods(nbCD, modelPriorSets = list(A = 1:100, B = 101:1000), cl = cl)
 @
 
 The model priors used are recorded in the @priorModels slot.
-<<>>=
+<<eval=FALSE>>=
 CDv@priorModels
 @ 
 
 We can see the difference in performance by computing the ROC curves as before. Using different model priors can substantially improve performance, although obviously we have cheated here by splitting exactly those data simulated as DE and those as none-DE. It should also be recognised that this approach may bias downstream analyses; e.g. GO enrichment analysis.
 
-<<echo = false, fig = FALSE, label=plotCompVROC>>=
+<<eval=FALSE,echo = false, fig = FALSE, label=plotCompVROC>>=
 TPs <- cumsum(order(CD@posteriors[,2], decreasing = TRUE) %in% 1:100); FPs <- 1:1000 - TPs
 nbTPs <- cumsum(order(nbCD@posteriors[,2], decreasing = TRUE) %in% 1:100); nbFPs <- 1:1000 - nbTPs
 vTPs <- cumsum(order(CDv@posteriors[,2], decreasing = TRUE) %in% 1:100); vFPs <- 1:1000 - vTPs
@@ -205,7 +206,7 @@ legend(x = "bottomright", legend = c("standard", "Generic (NB-distribution)", "V
 
 \begin{figure}[!ht]
 \begin{center}
-<<label=figCompVRoc, fig=TRUE,echo=FALSE>>=
+<<eval=FALSE,label=figCompVRoc, fig=TRUE,echo=FALSE>>=
 <<plotCompVROC>>
 @ 
 \caption{ROC curves estimated by standard/generic/variable model priors baySeq"}
