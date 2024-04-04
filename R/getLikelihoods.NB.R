@@ -5,7 +5,7 @@ function(cD, prs, pET = "BIC", marginalise = FALSE, subset = NULL, priorSubset =
     warning("This function is deprecated; using 'getLikelihoods' instead.")
     if(!missing(prs)) return(getLikelihoods(cD, prs = prs, pET = pET, marginalise = marginalise, subset = subset, priorSubset = priorSubset, bootStraps = bootStraps, conv = conv, nullData = nullData, returnAll = returnAll, returnPD = returnPD, verbose = verbose, discardSampling = discardSampling, cl = cl, ...)) else return(getLikelihoods(cD, pET = pET, marginalise = marginalise, subset = subset, priorSubset = priorSubset, bootStraps = bootStraps, conv = conv, nullData = nullData, returnAll = returnAll, returnPD = returnPD, verbose = verbose, discardSampling = discardSampling, cl = cl, ...))
 
-    stop("You shouldn't ever see this message.")
+    # stop("You shouldn't ever see this message.")
   }    
 #    constructWeights <- function(withinCluster = FALSE, consensus = FALSE)
 #      {
