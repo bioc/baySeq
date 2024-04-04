@@ -7,7 +7,7 @@ Depends: R (>= 2.3.0), methods
 Imports: edgeR, GenomicRanges, abind, parallel, graphics, stats, utils
 Suggests: BiocStyle, BiocGenerics
 Authors@R: c(person("Thomas J.", "Hardcastle", role = "aut"),
-  person("Samuel", "Granjeaud", role = "cre", email = "samuel.granjeaud@inserm.fr"))
+  person("Samuel", "Granjeaud", role = "cre", email = "samuel.granjeaud@inserm.fr", comment=c(ORCID="0000-0001-9245-1535")))
 Description: This package identifies differential expression in high-throughput 
   'count' data, such as that derived from next-generation sequencing machines, 
   calculating estimated posterior likelihoods of differential expression (or 
@@ -15,5 +15,7 @@ Description: This package identifies differential expression in high-throughput
 License: GPL-3
 LazyLoad: yes
 biocViews: Sequencing, DifferentialExpression, MultipleComparison, SAGE, Bayesian, Coverage
+URL: https://github.com/samgg/baySeq
+BugReports: https://github.com/samgg/baySeq/issues
 RoxygenNote: 7.2.3
 PackageStatus: Deprecated
