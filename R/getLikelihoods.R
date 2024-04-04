@@ -45,11 +45,11 @@ makeOrderings <- function(cD, orderingFunction)
             eqord <- gsub("^=+", "", eqord)
             eqord <- gsub("=+$", "", eqord)
             eqord <- gsub("=+", "=", eqord)          
-            orderings = paste(orderings, eqord, ">", sep = "")
+            orderings <- paste(orderings, eqord, ">", sep = "")
             gorders[maxes] <- NA
           }
           orderings <- gsub(">+$", "", orderings)        
-        } else orderings = rep("", nrow(cD))
+        } else orderings <- rep("", nrow(cD))
         as.factor(orderings)
       }))                   
       
@@ -142,9 +142,9 @@ function(ps, prs, pET = "none", marginalise = FALSE, groups, priorSubset = NULL,
                            lapply(1:length(numintSamp[[ii]]), function(jj)
                                {
                                     sampw <- cbind(numintSamp[[ii]][[jj]], exweight = weights[[ii]][[jj]])
-                                    nS = numintSamp[[ii]][[jj]]; exweight = weights[[ii]][[jj]]
-				    #                                    save(sampw, nS, exweight, file = "~/sampw.RData")
-                                    sampw <- sampw[order(sampw[,2]),]                                    
+                                    nS <- numintSamp[[ii]][[jj]]; exweight = weights[[ii]][[jj]]
+                                    # save(sampw, nS, exweight, file = "~/sampw.RData")
+                                    sampw <- sampw[order(sampw[,2]),]
                                     sapply(split(sampw[,4] * sampw[,3], sampw[,2]), sum)
                                   }))
     
@@ -312,7 +312,7 @@ function(cD, prs, pET = "BIC", marginalise = FALSE, subset = NULL, priorSubset =
         
     listPosts <- list()
     
-    if(!(class(subset) == "integer" | class(subset) == "numeric" | is.null(subset)))
+    if(!(is(subset, "integer") | is(subset, "numeric") | is.null(subset)))
       stop("'subset' must be integer, numeric, or NULL")    
     if(is.null(subset)) subset <- 1:nrow(cD)    
     if(is.null(priorSubset)) priorSubset <- subset    

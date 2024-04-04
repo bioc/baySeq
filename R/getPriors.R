@@ -169,7 +169,7 @@ function (cD, samplesize = 1e5, samplingSubset = NULL, equalDispersions = TRUE, 
       cD@groups <- lapply(cD@groups, as.factor)
       warning("Not all members of the '@groups' slot were factors; converting now.")
     }
-  if(class(cD@replicates) != "factor")
+  if(is(cD@replicates, "factor"))
     {
       cD@replicates <- as.factor(cD@replicates)
       warning("The '@replicates' slot is not a factor; converting now.")
