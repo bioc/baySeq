@@ -101,7 +101,7 @@ setMethod("flatten", signature = "countData", function(cD, normalise = FALSE) {
 
 setGeneric("groups<-", function(x, value) standardGeneric("groups<-"))
 setMethod("groups<-", signature = "countData", function(x, value) {
-    if(any(sapply(value, length) != ncol(x))) stop(paste(sum(sapply(value, length) != ncol(x)), "vector(s) in the groups structure are the wrong length."))
+    if(any(sapply(value, length) != ncol(x))) stop(sum(sapply(value, length) != ncol(x)), "vector(s) in the groups structure are the wrong length.")
     x@groups <- lapply(value, as.factor)
     x
 })
