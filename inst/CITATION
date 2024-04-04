@@ -1,0 +1,38 @@
+pkgVer <- function(pkg) {
+    if (!exists("meta") || is.null(meta)) meta <- packageDescription(pkg)
+    ver <- meta$Version
+    paste0('https://github.com/SamGG/baySeq/', pkg, ' - R package version ', ver)
+}
+
+c(
+    bibentry(bibtype="manual",
+        title = "baySeq: empirical Bayesian methods for identifying differential expression in sequence count data.",
+        author = personList(
+            as.person("Hardcastle, Thomas J")
+        ),
+        year = format(Sys.Date(), "%Y"),
+        url = "http://www.bioconductor.org/packages/baySeq",
+        note = pkgVer('baySeq'),
+        doi = '10.18129/B9.bioc.baySeq'
+    ),
+    bibentry(bibtype="article",
+        title = "Generalized empirical Bayesian methods for discovery of differential data in high-throughput biology.",
+        author = personList(
+            as.person("Hardcastle, Thomas J")
+        ),
+        year = "2016 Jan 15",
+        journal = "Bioinformatics",
+        doi = "10.1093/bioinformatics/btv569",
+        url = "https://academic.oup.com/bioinformatics/article/32/2/195/1744387"
+    ),
+    bibentry(bibtype="article",
+        title = "baySeq: empirical Bayesian methods for identifying differential expression in sequence count data.",
+        author = personList(
+            as.person("Hardcastle, Thomas J"), as.person("Kelly, Krystyna A")
+        ),
+        year = "2010 Aug 10",
+        journal = "BMC Bioinformatics",
+        doi = "10.1186/1471-2105-11-422",
+        url = "https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-11-422"
+    )
+)
