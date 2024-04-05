@@ -15,7 +15,7 @@
   file `mobData'.
 }
 
-\usage{mobAnnotation}
+\usage{data(mobAnnotation)}
 \format{A data.frame defining chromosome and position of the sRNA loci.}
 \source{Illumina sequencing.}
 \seealso{\code{\link{mobData}}}

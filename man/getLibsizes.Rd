@@ -45,7 +45,7 @@ getLibsizes(cD, data, replicates, subset = NULL, estimationType = c("quantile", 
   factor by the method of Bullard et al (Bioinformatics 2010), summing
   all counts in each sample whose value below the qth quantile of
   non-zero counts for that sample. 'edgeR' uses the Trimmed Mean of
-  M-vales (TMM) method of Robinson \& Oshlack (Genome Biology, 2010) via
+  M-vales (TMM) method of Robinson and Oshlack (Genome Biology, 2010) via
   the 'edgeR' calcNormFactors function; other options are
   available through this function.
 

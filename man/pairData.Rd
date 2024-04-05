@@ -19,7 +19,7 @@
   parameters for each row are determined by a beta distribution on the
   relative proportions of data in each pairing.}
 
-\usage{pairData}
+\usage{data(pairData)}
 \format{A matrix of which each of the eight columns represents a sample,
   and each row some discrete data (acquired by sequencing).}
 \source{Simulation.}

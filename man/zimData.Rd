@@ -12,7 +12,7 @@
   row. The first hundred rows of the data are truly differentially
   expressed, the remainder have no differential expression.}
 
-\usage{zimData}
+\usage{data(zimData)}
 \format{A matrix of which each of the ten columns represents a sample,
   and each row some discrete data (acquired by sequencing).}
 \source{Simulation.}

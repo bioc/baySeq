@@ -10,7 +10,7 @@
   `simData' and contains the estimated priors. This data set is intended
   to be used to speed the processing of the examples.}
 
-\usage{CDPriors}
+\usage{data(CDPriors)}
 \format{A `countData' object.}
 \source{Simulation.}
 

@@ -11,7 +11,7 @@
   expression. This data set is intended to be used to speed the
   processing of the examples.}
 
-\usage{CDPost}
+\usage{data(CDPost)}
 \format{A `countData' object.}
 \source{Simulation.}
 

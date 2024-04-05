@@ -24,7 +24,7 @@
   file `mobAnnotation'.
 }
 
-\usage{mobData}
+\usage{data(mobData)}
 \format{A matrix of which each of the six columns represents a sample,
   and each row an sRNA locus (acquired by sequencing).}
 \source{Illumina sequencing.}

@@ -11,7 +11,7 @@
   row. The first hundred rows of the data are truly differentially
   expressed, the remainder have no differential expression.}
 
-\usage{simData}
+\usage{data(simData)}
 \format{A matrix of which each of the ten columns represents a sample,
   and each row some discrete data (acquired by sequencing).}
 \source{Simulation.}
