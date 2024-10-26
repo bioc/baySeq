@@ -10,7 +10,8 @@ This function estimates the library scaling factors that should be used
 for either a 'countData', or a matrix of counts and replicate information.
 }
 \usage{
-getLibsizes(cD, data, replicates, subset = NULL, estimationType = c("quantile", "total", "edgeR"), quantile = 0.75, ...)
+getLibsizes(cD, data, replicates, subset = NULL, 
+estimationType = c("quantile", "total", "edgeR"), quantile = 0.75, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

@@ -10,7 +10,8 @@
   the user.
 }
 \usage{
-getPosteriors(ps, prs, pET = "none", marginalise = FALSE, groups, priorSubset = NULL, maxit = 100, accuracy =
+getPosteriors(ps, prs, pET = "none", marginalise = FALSE, groups, 
+priorSubset = NULL, maxit = 100, accuracy =
 1e-5, eqOverRep = NULL, cl = cl)
 }
 %- maybe also 'usage' for other objects documented here.
