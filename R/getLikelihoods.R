@@ -603,11 +603,13 @@ function(cD, prs, pET = "BIC", marginalise = FALSE, subset = NULL, priorSubset =
               retPosts <- retPosts[,-ndenulGroup, drop = FALSE]
             }
             colnames(retPosts) <- names(cD@groups)            
+            estProps <- apply(exp(retPosts), 2, mean, na.rm = TRUE)
             if(nullData) {
               cD@priors$weights <- weights[-ndenulGroup]
               cD@priors$nullWeights <- weights[[ndenulGroup]]
             } else cD@priors$weights <- weights
             listPosts[[cc]] <- (new(class(cD), cD, posteriors = retPosts,
+                                    estProps = estProps,
                                     nullPosts = nullPosts, priorModels = restprs))
             #if(!is.null(body(cD@densityFunction@orderingFunction)))
             listPosts[[cc]] <- makeOrderings(listPosts[[cc]])
