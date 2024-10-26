@@ -43,7 +43,12 @@ library(baySeq)
 
 Note that because the experiments that \verb'baySeq' is designed to analyse are usually massive, we should use (if possible) parallel processing as implemented by the \verb'snow' package. We use the \verb'parallel' package (if it exists), and define a \textsl{cluster}. If \verb'parallel' is not present, we can proceed anyway with a \verb'NULL' cluster. Results may be slightly different depending on whether or not a cluster is used owing to the non-deterministic elements of the method.
 <<results = hide>>=
-if(require("parallel")) cl <- makeCluster(4) else cl <- NULL
+if(TRUE) { # set to FALSE if you don't want parallelisation
+  library(parallel)  # explicit use, assume installed because in "Imports"
+  cl <- makeCluster(4)
+} else {
+  cl <- NULL
+}
 @
 
 We load a simulated data set consisting of count data on one thousand counts.
@@ -85,7 +90,8 @@ CD <- new("countData", data = simData, replicates = replicates, groups = groups)
 Library sizes can be inferred from the data if the user is not able to supply them.
 
 <<>>=
-  libsizes(CD) <- getLibsizes(CD)
+libsizes(CD) <- getLibsizes(CD)
+libsizes(CD)
 @ 
 
 We can then plot the data in the form of an MA-plot, suitable modified to plot those data where the data are uniformly zero (and hence the log-ratio is infinite) (Figure~\ref{figMA}). Truly differentially expressed data can be identified in the plot by coloring these data red, while non-differentially expressed data are colored black.
@@ -121,6 +127,11 @@ CD <- getPriors.NB(CD, samplesize = 1000, estimation = "QL", cl = cl)
 @
 
 The calculated priors are stored in the \verb'@priors' slot of the \verb'countData' object produced as before. For the negative-binomial method, we are unable to form a conjugate prior distribution. Instead, we build an empirical prior distribution which we record in the list object \verb'$priors' of the slot \verb'@priors'. Each member of this list object corresponds to one of the models defined by the \verb'group' slot of the \verb'countData' object and contains the estimated parameters for each of the individual counts selected under the models. The vector \verb'$sampled' contained in the slot \verb'@priors' describes which rows were sampled to create these sets of parameters.
+
+<<>>=
+CD@groups
+sapply(names(CD@groups), function(group) lapply(CD@priors$priors[[group]], head, 5))
+@
 
 We then acquire posterior likelihoods, estimating the proportions of differentially expressed counts.
 
